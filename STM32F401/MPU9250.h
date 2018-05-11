@@ -338,8 +338,7 @@ public:
     {
         uint8_t rawData[6];  // x/y/z accel register data stored here
         readBytes(MPU9250_ADDRESS, ACCEL_XOUT_H, 6, &rawData[0]);  // Read the six raw data registers into data array
-        destination[0] = (int16_t)(
-                ((int16_t) rawData[0] << 8) | rawData[1]);  // Turn the MSB and LSB into a signed 16-bit value
+        destination[0] = (int16_t)(((int16_t) rawData[0] << 8) | rawData[1]);  // Turn the MSB and LSB into a signed 16-bit value
         destination[1] = (int16_t)(((int16_t) rawData[2] << 8) | rawData[3]);
         destination[2] = (int16_t)(((int16_t) rawData[4] << 8) | rawData[5]);
     }
@@ -347,10 +346,8 @@ public:
     void readGyroData(int16_t *destination)
     {
         uint8_t rawData[6];  // x/y/z gyro register data stored here
-        readBytes(MPU9250_ADDRESS, GYRO_XOUT_H, 6,
-                  &rawData[0]);  // Read the six raw data registers sequentially into data array
-        destination[0] = (int16_t)(
-                ((int16_t) rawData[0] << 8) | rawData[1]);  // Turn the MSB and LSB into a signed 16-bit value
+        readBytes(MPU9250_ADDRESS, GYRO_XOUT_H, 6, &rawData[0]);  // Read the six raw data registers sequentially into data array
+        destination[0] = (int16_t)(((int16_t) rawData[0] << 8) | rawData[1]);  // Turn the MSB and LSB into a signed 16-bit value
         destination[1] = (int16_t)(((int16_t) rawData[2] << 8) | rawData[3]);
         destination[2] = (int16_t)(((int16_t) rawData[4] << 8) | rawData[5]);
     }
@@ -365,8 +362,7 @@ public:
             uint8_t c = rawData[6]; // End data read by reading ST2 register
             if (!(c & 0x08))
             { // Check if magnetic sensor overflow set, if not then report data
-                destination[0] = (int16_t)(
-                        ((int16_t) rawData[1] << 8) | rawData[0]);  // Turn the MSB and LSB into a signed 16-bit value
+                destination[0] = (int16_t)(((int16_t) rawData[1] << 8) | rawData[0]);  // Turn the MSB and LSB into a signed 16-bit value
                 destination[1] = (int16_t)(((int16_t) rawData[3] << 8) | rawData[2]);  // Data stored as little Endian
                 destination[2] = (int16_t)(((int16_t) rawData[5] << 8) | rawData[4]);
             }
@@ -376,8 +372,7 @@ public:
     int16_t readTempData()
     {
         uint8_t rawData[2];  // x/y/z gyro register data stored here
-        readBytes(MPU9250_ADDRESS, TEMP_OUT_H, 2,
-                  &rawData[0]);  // Read the two raw data registers sequentially into data array
+        readBytes(MPU9250_ADDRESS, TEMP_OUT_H, 2, &rawData[0]);  // Read the two raw data registers sequentially into data array
         return (int16_t)(((int16_t) rawData[0]) << 8 | rawData[1]);  // Turn the MSB and LSB into a 16-bit value
     }
 
@@ -429,8 +424,7 @@ public:
         writeByte(MPU9250_ADDRESS, CONFIG, 0x03);  // low pass filter 41hz, and 42hz
 
         // Set sample rate = gyroscope output rate/(1 + SMPLRT_DIV)
-        // writeByte(MPU9250_ADDRESS, SMPLRT_DIV, 0x04);  // Use a 200 Hz rate; the same rate set in CONFIG above
-        writeByte(MPU9250_ADDRESS, SMPLRT_DIV, 0x09);  // Use a 100 Hz rate; the same rate set in CONFIG above
+         writeByte(MPU9250_ADDRESS, SMPLRT_DIV, 0x04);  // Use a 200 Hz rate; the same rate set in CONFIG above
 
         // Set gyroscope full scale range
         // Range selects FS_SEL and AFS_SEL are 0 - 3, so 2-bit values are left-shifted into positions 4:3
@@ -627,9 +621,8 @@ public:
     }
 
 
-// Accelerometer and gyroscope self test; check calibration wrt factory settings
-    void MPU9250SelfTest(
-            float *destination) // Should return percent deviation from factory trim values, +/- 14 or less deviation is a pass
+    // Accelerometer and gyroscope self test; check calibration wrt factory settings
+    void MPU9250SelfTest(float *destination) // Should return percent deviation from factory trim values, +/- 14 or less deviation is a pass
     {
         uint8_t rawData[6] = {0, 0, 0, 0, 0, 0};
         uint8_t selfTest[6];

@@ -148,15 +148,13 @@ int main()
             mpu9250.readMagData(magCount);  // Read the x/y/z adc values
             // Calculate the magnetometer values in milliGauss
             // Include factory calibration per data sheet and user environmental corrections
-            mx = (float) magCount[0] * mRes * magCalibration[0] -
-                 magbias[0];  // get actual magnetometer value, this depends on scale being set
+            mx = (float) magCount[0] * mRes * magCalibration[0] - magbias[0];  // get actual magnetometer value, this depends on scale being set
             my = (float) magCount[1] * mRes * magCalibration[1] - magbias[1];
             mz = (float) magCount[2] * mRes * magCalibration[2] - magbias[2];
         }
 
         Now = t.read_us();
-        deltat = (float) ((Now - lastUpdate) /
-                          1000000.0f); // set integration time by time elapsed since last filter update
+        deltat = (float) ((Now - lastUpdate) / 1000000.0f); // set integration time by time elapsed since last filter update
         lastUpdate = Now;
 
         sum += deltat;
@@ -221,6 +219,7 @@ int main()
             yaw = atan2(2.0f * (q[1] * q[2] + q[0] * q[3]), q[0] * q[0] + q[1] * q[1] - q[2] * q[2] - q[3] * q[3]);
             pitch = -asin(2.0f * (q[1] * q[3] - q[0] * q[2]));
             roll = atan2(2.0f * (q[0] * q[1] + q[2] * q[3]), q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3]);
+
             pitch *= 180.0f / PI;
             yaw *= 180.0f / PI;
             yaw -= 13.8f; // Declination at Danville, California is 13 degrees 48 minutes and 47 seconds on 2014-04-04
